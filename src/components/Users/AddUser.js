@@ -3,14 +3,20 @@ import Card from "../UI/Card";
 import classes from "./AddUser.module.css";
 import Button from "../UI/Button";
 import ErrorModal from "../UI/ErrorModal";
+import Wrapper from "../Helpers/Wrapper";
 
 const AddUser = (props) => {
   const [enteredName, setEnteredName] = useState("");
   const [enteredAge, setEnteredAge] = useState("");
+  const [enteredCollege, setEnteredCollege] = useState("");
   const [error, setError] = useState();
   const submitFormHandler = (event) => {
     event.preventDefault();
-    if (enteredName.trim().length === 0 || enteredAge.trim().length === 0) {
+    if (
+      enteredName.trim().length === 0 ||
+      enteredCollege.trim().length === 0 ||
+      enteredAge.trim().length === 0
+    ) {
       setError({
         title: "Invalid Input",
         message: "Please Enter Valid Name and Age(non-empty)",
@@ -24,9 +30,10 @@ const AddUser = (props) => {
       });
       return;
     }
-    props.onAddUser(enteredName, enteredAge);
+    props.onAddUser(enteredName, enteredAge, enteredCollege);
     setEnteredName("");
     setEnteredAge("");
+    setEnteredCollege("");
   };
 
   const enteredNameHandler = (event) => {
@@ -35,13 +42,16 @@ const AddUser = (props) => {
   const enteredAgeHandler = (event) => {
     setEnteredAge(event.target.value);
   };
+  const enteredCollegeHandler = (event) => {
+    setEnteredCollege(event.target.value);
+  };
 
   const errorHandler = () => {
     setError(null);
   };
 
   return (
-    <div>
+    <Wrapper>
       {error && (
         <ErrorModal
           onConfirm={errorHandler}
@@ -65,10 +75,17 @@ const AddUser = (props) => {
             value={enteredAge}
             onChange={enteredAgeHandler}
           ></input>
+          <label htmlFor="college">College Name</label>
+          <input
+            type="text"
+            id="college"
+            onChange={enteredCollegeHandler}
+            value={enteredCollege}
+          ></input>
           <Button type="submit">AddUser</Button>
         </form>
       </Card>
-    </div>
+    </Wrapper>
   );
 };
 export default AddUser;
